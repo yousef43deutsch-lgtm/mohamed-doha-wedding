@@ -137,13 +137,70 @@ footer small{font-size:.75rem}
 }
 .music-toggle{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:6px 14px;border:0;background:transparent;color:var(--wine);font-size:.93rem;text-decoration:underline;text-underline-offset:4px}
 .music-toggle:hover{background:#ead9cd;border-radius:4px}
+/* The seal, flap and paper move on the same timeline as the audio cue. */
+.cover-heading .cover-label{
+  display:flex;align-items:center;justify-content:center;gap:11px;
+  font-size:clamp(1.14rem,3.8vw,1.55rem);font-weight:700;line-height:1.3;
+}
+.cover-label::before,.cover-label::after{
+  content:"";width:clamp(16px,5vw,32px);height:1px;background:#e9c58d80;
+}
+.cover-heading h1{margin-block-start:clamp(32px,5.3vw,52px)}
+.envelope-back{
+  background:repeating-linear-gradient(115deg,#fff4dc08 0 1px,transparent 1px 4px),
+    linear-gradient(155deg,#914359,#451423 80%);
+}
+.flap{
+  background:repeating-linear-gradient(119deg,#fff4dc0a 0 1px,transparent 1px 4px),
+    linear-gradient(155deg,#a75568,#70273d 70%);
+  transition:transform .48s .12s cubic-bezier(.45,.12,.23,1),z-index 0s .36s;
+}
+.seal{overflow:hidden;transition:transform .33s cubic-bezier(.35,.1,.52,1),opacity .25s .08s}
+.seal::after{
+  content:"";position:absolute;inset:-32%;pointer-events:none;
+  background:linear-gradient(105deg,transparent 38%,#fff7de85 49%,transparent 59%);
+  transform:translateX(-105%) rotate(9deg);
+  animation:seal-glint 1.05s 1.15s ease-in-out 1 both;
+}
+@keyframes seal-glint{to{transform:translateX(105%) rotate(9deg)}}
+.letter{
+  border:1px solid #e4c79c;outline:1px solid #b68c5266;outline-offset:-6px;
+  background:repeating-linear-gradient(110deg,#b68c5208 0 1px,transparent 1px 4px),var(--ivory);
+  transition:transform .5s .31s cubic-bezier(.18,.76,.24,1);
+}
+.open-caption{transition:color .2s,background-color .2s,border-color .2s}
+.is-opening .seal{transform:translate(-44%,10%) rotate(17deg) scale(.92)}
+.is-opening .flap{transform:rotateX(173deg)}
+.is-opening .letter{transform:translateY(-63%) rotate(-1.4deg)}
+.is-opening .cover-heading,.is-opening .cover-date,.is-opening .open-caption{
+  opacity:0;transition:opacity .2s .27s;
+}
+.is-opening .envelope{animation:envelope-exit .24s .78s ease-in both}
+@keyframes envelope-exit{to{opacity:0;transform:translateY(-8px) scale(1.018)}}
+.invite-card::after{
+  content:"";position:absolute;top:8px;left:50%;width:min(27%,155px);height:1px;
+  background:linear-gradient(90deg,transparent,#ad793d,transparent);
+  transform:translateX(-50%);pointer-events:none;
+}
+.invite-card > :is(.verse,p:not(.location),h2,.date,.location,.actions){
+  animation:details-arrive .49s cubic-bezier(.2,.65,.3,1) both;
+}
+.invite-card > h2{animation-delay:.08s}
+.invite-card > :is(.date,.location){animation-delay:.14s}
+.invite-card > .actions{animation-delay:.21s}
+@keyframes details-arrive{from{opacity:.18;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+main .section-intro.section-arrived,.count-section h2.section-arrived{animation:details-arrive .44s ease-out both}
+@media(max-width:600px){
+  .opening{gap:clamp(17px,3.3svh,28px)}
+  .cover-heading h1{margin-block-start:29px}
+}
   </style>
 </head>
 <body>
-  <audio id="zaffa" src="zaffa.mp3" preload="auto"></audio>
+  <audio id="zaffa" src="zaffa.mp3?v=paper-opening" preload="auto"></audio>
   <header id="opening" class="opening">
     <div class="cover-heading">
-      <p>دعوة زفاف</p>
+      <p class="cover-label">دعوة زفاف</p>
       <h1>محمد <span>و</span>ضحى</h1>
     </div>
     <button id="open" class="envelope-button" type="button" aria-controls="invitation" aria-expanded="false">
@@ -246,7 +303,8 @@ function updateMusicToggle() {
   musicToggle.setAttribute('aria-pressed', String(!music.paused));
 }
 
-function playZaffa() {
+function playZaffa(fromEnvelope = false) {
+  if (!fromEnvelope && (music.ended || music.currentTime < 0.635)) music.currentTime = 0.635;
   music.play().catch(updateMusicToggle);
 }
 
@@ -272,6 +330,15 @@ function revealInvitation(target = names) {
       }
     }, {rootMargin: '160px'});
     observer.observe(map);
+    if (target === names && !reducedMotion.matches) {
+      const entrances = new IntersectionObserver(entries => {
+        entries.filter(entry => entry.isIntersecting).forEach(entry => {
+          entry.target.classList.add('section-arrived');
+          entrances.unobserve(entry.target);
+        });
+      }, {threshold: 0.25});
+      invitation.querySelectorAll('.section-intro, #count-title').forEach(heading => entrances.observe(heading));
+    }
   } else loadMap();
   target.focus({preventScroll: true});
   if (target === names) window.scrollTo(0, 0);
@@ -279,11 +346,11 @@ function revealInvitation(target = names) {
 }
 
 openButton.addEventListener('click', () => {
-  playZaffa();
+  playZaffa(true);
   openButton.disabled = true;
   opening.classList.add('is-opening');
   if (reducedMotion.matches) revealInvitation();
-  else window.setTimeout(revealInvitation, 1050);
+  else window.setTimeout(revealInvitation, 1020);
 });
 
 if (location.hash === '#rsvp') {

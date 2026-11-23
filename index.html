@@ -33,10 +33,10 @@ h1,h2,p{margin:0}
 .opening::before,.opening::after{content:"";position:absolute;inset:clamp(12px,3vw,35px);z-index:-1;border:1px solid #ddb57055;pointer-events:none}
 .opening::after{inset:clamp(17px,3.6vw,42px);border-color:#ddb57025;background:repeating-linear-gradient(119deg,#ffeaba04 0 1px,#00000000 1px 4px)}
 .cover-heading p,.cover-date{color:var(--shine)}
-.cover-heading h1,.invite-card h2,.footer-names{font-family:Aref,serif;font-weight:700;line-height:1.04}
-.cover-heading h1{font-size:clamp(4.4rem,13vw,8.6rem);margin-block-start:2px;text-shadow:0 4px 30px #21091266}
+.cover-heading h1,.invite-card h2,.footer-names{font-family:Aref,serif;font-weight:700;line-height:1.22}
+.cover-heading h1{font-size:clamp(3.25rem,11vw,7.6rem);margin-block-start:clamp(12px,2.5vw,22px);text-shadow:0 4px 30px #21091266}
 .cover-heading span,.invite-card h2 span{color:var(--gold);font-size:.85em}
-.envelope-button{width:min(430px,84vw);border:0;background:none;color:var(--ivory);padding:0}
+.envelope-button{width:min(400px,78vw);border:0;background:none;color:var(--ivory);padding:0}
 .envelope{display:block;position:relative;isolation:isolate;aspect-ratio:1.71;background:#621e32;box-shadow:0 30px 50px #19081099,0 2px 2px #270813b3;perspective:850px}
 .envelope-back,.folds,.flap,.letter,.seal{position:absolute}
 .envelope-back,.folds,.flap{inset:0}
@@ -58,12 +58,12 @@ h1,h2,p{margin:0}
 main{width:min(820px,100%);margin:auto;padding:clamp(16px,4vw,43px) clamp(12px,3vw,22px) 42px;animation:appear .55s ease-out}
 @keyframes appear{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 .invite-card,.section-card{background:var(--ivory);color:var(--ink);border-radius:4px;box-shadow:0 12px 32px #20091342}
-.invite-card{position:relative;min-height:500px;padding:clamp(43px,8vw,75px) 18px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;border:1px solid var(--gold);outline:1px solid #ad7c43aa;outline-offset:-9px}
+.invite-card{position:relative;padding:clamp(29px,5vw,52px) 18px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;border:1px solid var(--gold);outline:1px solid #ad7c43aa;outline-offset:-9px}
 .corner{position:absolute;width:34px;height:34px;border:1px solid var(--gold);pointer-events:none}
 .corner.top{top:15px;right:15px;border-inline-end:0;border-bottom:0}
 .corner.bottom{bottom:15px;left:15px;border-inline-start:0;border-top:0}
 .verse{font-family:Aref,serif;color:#694438;font-size:clamp(1.16rem,4vw,1.55rem);margin-block-end:5px}
-.invite-card h2{color:var(--wine);font-size:clamp(3.8rem,12.5vw,7rem)}
+.invite-card h2{color:var(--wine);font-size:clamp(3rem,10.5vw,6rem);margin-block-start:8px}
 .invite-card h2:focus{outline:none}
 .gold-divider{display:flex;align-items:center;gap:8px;color:var(--gold);margin:3px 0}
 .gold-divider::before,.gold-divider::after{content:"";width:42px;border-top:1px solid currentColor}
@@ -111,19 +111,33 @@ form small{display:block;text-align:center;margin-top:7px;font-size:.89rem}
 footer{text-align:center;color:var(--shine);padding-top:8px}
 .footer-names{font-size:2.4rem;margin-bottom:9px}
 footer small{font-size:.75rem}
-.sound{position:fixed;z-index:6;bottom:max(10px,env(safe-area-inset-bottom));left:10px;color:var(--ivory);background:var(--deep);border:1px solid var(--gold);border-radius:30px;padding:7px 12px;font-size:.9rem;box-shadow:0 4px 12px #18091360}
 @media(max-width:380px){.reply-options label{font-size:.91rem}.invite-card .actions{gap:6px}.actions .button{padding-inline:11px}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 
-  .song-card{scroll-margin-top:14px;text-align:center}
-.song-player{width:min(100%,560px);margin:auto;background:var(--deep);border-radius:4px;overflow:hidden}
-.song-player iframe{width:100%;height:auto;min-height:200px;aspect-ratio:16/9;display:block;border:0}
-.song-youtube{display:inline-block;margin-top:12px;color:var(--wine);text-underline-offset:4px}
-a.sound{text-decoration:none}
+  .song-card{margin-top:13px;margin-bottom:0;scroll-margin-top:14px;text-align:center}
+@media(max-width:600px){
+  body{font-size:1rem}
+  .opening{gap:clamp(15px,3.4svh,28px);padding:35px 17px}
+  .cover-heading h1{font-size:clamp(3.35rem,12vw,4.6rem)}
+  .open-caption{margin-block-start:16px}
+  .cover-date{font-size:.95rem}
+  main{padding:12px 11px 34px}
+  .invite-card{gap:7px;padding:27px 12px 25px;outline-offset:-7px}
+  .verse{font-size:1.12rem;margin-block-end:3px}
+  .invite-card h2{font-size:clamp(3rem,11.5vw,4.25rem);margin-block-start:7px}
+  .date{font-size:1.06rem}
+  .location{max-width:100%;font-size:.98rem}
+  .invite-card .actions{margin-top:4px}
+  .button{min-height:44px;padding-block:8px 6px}
+  .section-card{padding:17px}
+  .count-section{padding-block:26px}
+  .count-section h2{margin-bottom:10px}
+  .countdown{gap:6px}
+  .countdown span{font-size:.84rem}
+}
   </style>
 </head>
 <body>
-  <a id="sound" class="sound" href="#wedding-song" hidden>شغّل الزفّة</a>
   <header id="opening" class="opening">
     <div class="cover-heading">
       <p>دعوة زفاف</p>
@@ -209,16 +223,6 @@ a.sound{text-decoration:none}
       </form>
     </section>
 
-    <section class="section-card song-card" id="wedding-song" aria-labelledby="song-title">
-      <div class="section-intro">
-        <h2 id="song-title">زفّة محمد وضحى</h2>
-        <p>ادخلي عمري بخطواتك اليمين</p>
-      </div>
-      <div class="song-player">
-        <iframe id="song-player" title="زفّة ادخلي عمري بخطواتك اليمين على يوتيوب" src="https://www.youtube.com/embed/LZLeh8t-9vE" loading="lazy" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-      </div>
-      <a class="song-youtube" href="https://youtu.be/LZLeh8t-9vE" target="_blank" rel="noopener noreferrer">افتح الزفّة على يوتيوب</a>
-    </section>
     <footer>
       <p class="footer-names">محمد وضحى</p>
     </footer>
@@ -229,14 +233,12 @@ const opening = document.querySelector('#opening');
 const openButton = document.querySelector('#open');
 const invitation = document.querySelector('#invitation');
 const names = document.querySelector('#names');
-const soundButton = document.querySelector('#sound');
 const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
 
 function revealInvitation(target = names) {
   invitation.hidden = false;
   opening.hidden = true;
   openButton.setAttribute('aria-expanded', 'true');
-  soundButton.hidden = false;
   const map = document.querySelector('.venue-map');
   const loadMap = () => { if (!map.hasAttribute('src')) map.src = map.dataset.src; };
   if ('IntersectionObserver' in window) {

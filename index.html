@@ -135,9 +135,12 @@ footer small{font-size:.75rem}
   .countdown{gap:6px}
   .countdown span{font-size:.84rem}
 }
+.music-toggle{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:6px 14px;border:0;background:transparent;color:var(--wine);font-size:.93rem;text-decoration:underline;text-underline-offset:4px}
+.music-toggle:hover{background:#ead9cd;border-radius:4px}
   </style>
 </head>
 <body>
+  <audio id="zaffa" src="zaffa.mp3" preload="auto"></audio>
   <header id="opening" class="opening">
     <div class="cover-heading">
       <p>دعوة زفاف</p>
@@ -169,6 +172,7 @@ footer small{font-size:.75rem}
         <a class="button primary" href="https://maps.app.goo.gl/cNrgMV5WRPn6KHxY9?g_st=aw" target="_blank" rel="noopener noreferrer">افتح الاتجاهات</a>
         <a class="button outline" href="#rsvp">أكد حضورك</a>
       </div>
+      <button class="music-toggle" id="music-toggle" type="button" aria-pressed="false">شغّل الزفّة</button>
     </section>
 
     <section class="count-section" aria-labelledby="count-title">
@@ -233,7 +237,26 @@ const opening = document.querySelector('#opening');
 const openButton = document.querySelector('#open');
 const invitation = document.querySelector('#invitation');
 const names = document.querySelector('#names');
+const music = document.querySelector('#zaffa');
+const musicToggle = document.querySelector('#music-toggle');
 const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
+
+function updateMusicToggle() {
+  musicToggle.textContent = music.paused ? 'شغّل الزفّة' : 'وقّف الزفّة';
+  musicToggle.setAttribute('aria-pressed', String(!music.paused));
+}
+
+function playZaffa() {
+  music.play().catch(updateMusicToggle);
+}
+
+music.addEventListener('play', updateMusicToggle);
+music.addEventListener('pause', updateMusicToggle);
+music.addEventListener('ended', updateMusicToggle);
+musicToggle.addEventListener('click', () => {
+  if (music.paused) playZaffa();
+  else music.pause();
+});
 
 function revealInvitation(target = names) {
   invitation.hidden = false;
@@ -256,6 +279,7 @@ function revealInvitation(target = names) {
 }
 
 openButton.addEventListener('click', () => {
+  playZaffa();
   openButton.disabled = true;
   opening.classList.add('is-opening');
   if (reducedMotion.matches) revealInvitation();
